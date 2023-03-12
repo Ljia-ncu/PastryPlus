@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pastry-portal
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:shardingsphere.yaml
+#    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/pastry-like?useSSL=false&serverTimezone=GMT%2B8
+#    username: root
+#    password: 123456
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+
+mybatis-plus:
+  mapper-locations:
+    - classpath:mapper/*.xml
+  typeEnumsPackage: org.mrl.enums
+
+redis-stream:
+  key: mq_like
+  group: group_like
+  batchSize: 20
+
+thread-pool:
+  corePoolSize: 3
+  maxPoolSize: 20
+  queueCapacity: 2000
+  keepAliveSeconds: 60

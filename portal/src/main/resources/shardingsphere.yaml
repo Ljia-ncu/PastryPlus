@@ -1,0 +1,33 @@
+dataSources:
+  db0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/pastry-like?useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+
+rules:
+- !SHARDING
+  tables:
+    record:
+      actualDataNodes: db0.record_$->{0..7}
+      keyGenerateStrategy:
+        column: id
+        keyGeneratorName: snowflake
+      tableStrategy:
+        standard:
+          shardingColumn: user_id
+          shardingAlgorithmName: table-inline
+  shardingAlgorithms:
+    table-inline:
+      type: INLINE
+      props:
+        algorithm-expression: record_$->{user_id & 7}
+  keyGenerators:
+    snowflake:
+      type: SNOWFLAKE
+      props:
+        worker-id: 1
+
+props:
+  sql-show: false
